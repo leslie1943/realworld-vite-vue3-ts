@@ -22,9 +22,7 @@ export interface IArticlesProps {
   author: IAuthorProp
 }
 
-interface TagList {
-  [index: number]: string
-}
+// 被 reactive修饰的不需要类型约束，其内部的属性需要
 export const articleState = reactive({
   artciles: Array<IArticlesProps>(),
   articleTags: Array<string>(),
