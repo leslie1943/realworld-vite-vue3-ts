@@ -18,7 +18,17 @@ export const router = createRouter({
         {
           path: '/',
           name: 'home',
-          component: () => import('./views/index'),
+          component: () => import('./views/Index'),
+        },
+        {
+          path: '/login',
+          name: 'login',
+          component: () => import('./views/Login'),
+        },
+        {
+          path: '/register',
+          name: 'register',
+          component: () => import('./views/Login'),
         },
       ],
     },

@@ -1,32 +1,38 @@
 import { defineComponent } from 'vue'
+import { RouterLink } from 'vue-router'
 
 export default defineComponent(() => {
   return () => (
     <nav class="navbar navbar-light">
       <div class="container">
-        <a class="navbar-brand" href="">
+        <RouterLink class="navbar-brand" to={{ path: '/' }}>
           <span style={{ color: '#2e5881' }}>conduit</span>
-        </a>
+        </RouterLink>
         <ul class="nav navbar-nav pull-xs-right">
           <li class="nav-item">
-            <a class="nav-link active" href="">
+            <RouterLink class="nav-link active" to={{ path: '/' }}>
               Home
-            </a>
+            </RouterLink>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="">
+            <RouterLink class="nav-link" to={{ path: '/' }}>
               <i class="ion-compose"></i>&nbsp;New Post
-            </a>
+            </RouterLink>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="">
+            <RouterLink class="nav-link" to={{ path: '/' }}>
               <i class="ion-gear-a"></i>&nbsp;Settings
-            </a>
+            </RouterLink>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="">
+            <RouterLink class="nav-link" to={{ path: '/register' }}>
               Sign up
-            </a>
+            </RouterLink>
+          </li>
+          <li class="nav-item">
+            <RouterLink class="nav-link" to={{ path: '/login' }}>
+              Sign in
+            </RouterLink>
           </li>
         </ul>
       </div>
