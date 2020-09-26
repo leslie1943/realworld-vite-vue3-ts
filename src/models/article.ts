@@ -1,15 +1,15 @@
-import { reactive, ref } from 'vue'
+import { reactive } from 'vue'
 
-// Article author props
-export interface IAuthorProp {
+// Article author state
+export interface AuthorState {
   username: string
   bio?: any
   image?: string
   following?: boolean
 }
 
-// Articles props
-export interface IArticlesProps {
+// Articles state
+export interface SingleArticleState {
   slug?: string
   title: string
   description?: string
@@ -19,11 +19,18 @@ export interface IArticlesProps {
   updatedAt?: string
   favorited: boolean
   favoritesCount: number
-  author: IAuthorProp
+  author: AuthorState
+}
+// 🚖🚖 All State
+export interface ArticleState {
+  // artciles: Array<SingleArticleState> // also works ✅
+  // articleTags: Array<string> // also works ✅
+  artciles: SingleArticleState[]
+  articleTags: string[]
 }
 
-// 被 reactive修饰的不需要类型约束，其内部的属性需要
-export const articleState = reactive({
-  artciles: Array<IArticlesProps>(),
-  articleTags: Array<string>(),
+// the properties what home page needs.
+export const articleState = reactive<ArticleState>({
+  artciles: [],
+  articleTags: [],
 })

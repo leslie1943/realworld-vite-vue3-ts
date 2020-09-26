@@ -1,11 +1,18 @@
-import { defineComponent, onMounted, ref, computed } from 'vue'
-import { useRoute, RouterLink } from 'vue-router'
+import { defineComponent, computed } from 'vue'
+import { useRoute, RouterLink, useRouter } from 'vue-router'
 import { loginState } from '../models/login'
 import { login, register } from '../api/user'
+import { setStore } from '../utils/localStore'
+import { useStore } from 'vuex'
 
 export default defineComponent({
   setup() {
+    // 获取全局vuex对象
+    const store = useStore()
+
+    // 获取全局路由对象
     const route = useRoute()
+    const router = useRouter()
     // 是否是登录
     const isLogin = computed(() => {
       return route.path === '/login'
@@ -22,12 +29,14 @@ export default defineComponent({
         const { data } = isLogin.value
           ? await login({ user: loginState.user })
           : await register({ user: loginState.user })
-        console.info('data', data)
+        // 将登录用户信息设置到本地
+        setStore('user', data.user)
+        // 将登录用户信息设置到Vuex中
+        store.commit('user/setUser', data.user)
+        // 登录成功跳转到首页
+        router.push('/')
       } catch (err) {
-        console.dir(err)
         loginState.errors = err.response.data.errors
-
-        console.info(loginState.errors)
       }
     }
 

@@ -12,23 +12,23 @@ export const router = createRouter({
       path: '/',
       name: 'root',
       // layout component
-      component: () => import('./layout/index'),
+      component: () => import('../layout/index'),
       redirect: { name: 'home' },
       children: [
         {
           path: '/',
           name: 'home',
-          component: () => import('./views/Index'),
+          component: () => import('../views/Index'),
         },
         {
           path: '/login',
           name: 'login',
-          component: () => import('./views/Login'),
+          component: () => import('../views/Login'),
         },
         {
           path: '/register',
           name: 'register',
-          component: () => import('./views/Login'),
+          component: () => import('../views/Login'),
         },
       ],
     },

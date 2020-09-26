@@ -12,6 +12,7 @@ export interface ErrorState {
   [propName: string]: string[]
 }
 
+// 🚖🚖 All State
 export interface LoginState {
   user: UserState
   errors: ErrorState
