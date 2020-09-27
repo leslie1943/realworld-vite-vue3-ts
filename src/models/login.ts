@@ -1,4 +1,6 @@
 import { reactive } from 'vue'
+import { useStore } from 'vuex'
+const store = useStore()
 
 // 表单元素约束
 export interface UserState {

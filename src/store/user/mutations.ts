@@ -1,6 +1,6 @@
 /**
- * 使用MutationTree定义mutations的类型，并将UserState作为泛型传入MutationTree
- * MutationTree不需要传入RootState
+ * Use MutationTree define muation's type, then UserState as Generic for MuationTree
+ * MutationTree need RootState no longer
  */
 
 import { MutationTree } from 'vuex'

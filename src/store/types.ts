@@ -1,5 +1,6 @@
 /**
- * 声明并暴露 RootState 类型
+ * declare and expose RootState
+ * all modules' states should be in here.
  */
 
 import { UserState } from './user/types'

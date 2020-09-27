@@ -1,8 +1,8 @@
-import { defineComponent, onMounted, reactive, toRefs } from 'vue'
-import { useRoute, RouterLink } from 'vue-router'
+import { computed, defineComponent, onMounted } from 'vue'
+import { RouterLink } from 'vue-router'
 import { getArticles } from '../api/articles'
 import { getTags } from '../api/tag'
-
+import { useStore } from 'vuex'
 import { articleState } from '../models/article'
 import Article from '../components/Article'
 
@@ -58,6 +58,7 @@ const Tabs = () => (
 )
 export default defineComponent({
   setup() {
+    const store = useStore()
     onMounted(async () => {
       // 并行执行接口调用
       const loadArticles = getArticles
@@ -68,6 +69,7 @@ export default defineComponent({
       articleState.artciles = articles.data.articles
       articleState.articleTags = tagsResult.data.tags
     })
+
     return () => (
       <div class="home-page">
         <Banner />
@@ -75,7 +77,7 @@ export default defineComponent({
           <div class="row">
             <div class="col-md-9">
               <Tabs />
-              {/* 文章列表 */}
+              {/* Article list */}
               {articleState.artciles.map((article) => (
                 <Article
                   image={article.author?.image}

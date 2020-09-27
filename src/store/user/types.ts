@@ -1,4 +1,4 @@
-// 声明并暴露UserState类型
+// define user information state
 export interface UserInfoState {
   bio?: string
   createdAt: string
@@ -10,6 +10,7 @@ export interface UserInfoState {
   username: string
 }
 
+// declare and expose UserState
 export interface UserState {
   user: UserInfoState
 }
