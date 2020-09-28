@@ -22,7 +22,7 @@ export default defineComponent({
                 Home
               </RouterLink>
             </li>
-
+            {/* New Post */}
             {user.value && (
               <li class="nav-item">
                 <RouterLink class="nav-link" to={{ path: '/' }}>
@@ -30,6 +30,7 @@ export default defineComponent({
                 </RouterLink>
               </li>
             )}
+            {/* 设置 */}
             {user.value && (
               <li class="nav-item">
                 <RouterLink class="nav-link" to={{ path: '/' }}>
@@ -37,6 +38,7 @@ export default defineComponent({
                 </RouterLink>
               </li>
             )}
+            {/* 注册 */}
             {!user.value && (
               <li class="nav-item">
                 <RouterLink class="nav-link" to={{ path: '/register' }}>
@@ -44,10 +46,20 @@ export default defineComponent({
                 </RouterLink>
               </li>
             )}
+            {/* 登录 */}
             {!user.value && (
               <li class="nav-item">
                 <RouterLink class="nav-link" to={{ path: '/login' }}>
                   Sign in
+                </RouterLink>
+              </li>
+            )}
+            {/* 账户信息 */}
+            {user.value && (
+              <li class="nav-item">
+                <RouterLink class="nav-link" to={{ path: '/' }}>
+                  <img class="user-pic" src={user.value.image} />
+                  {user.value.username}
                 </RouterLink>
               </li>
             )}

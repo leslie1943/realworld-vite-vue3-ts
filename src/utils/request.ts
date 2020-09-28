@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { AxiosRequestConfig } from 'axios'
+import { store } from '../store/index'
 
 export const request = axios.create({
   baseURL: 'https://conduit.productionready.io',
@@ -13,6 +14,12 @@ export const request = axios.create({
  */
 request.interceptors.request.use(
   (config: AxiosRequestConfig) => {
+    // 加载store中的user
+    const { user } = store.modules?.user.state
+    if (user && user.token) {
+      // 请求token
+      config.headers.Authorization = `Token ${user.token}`
+    }
     // 返回请求配置对象
     return config
   },

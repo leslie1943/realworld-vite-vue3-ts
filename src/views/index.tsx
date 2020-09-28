@@ -1,10 +1,13 @@
-import { defineComponent, onMounted } from 'vue'
-import { RouterLink } from 'vue-router'
-import { getArticles } from '../api/articles'
+import { computed, defineComponent, onMounted, ref, watchEffect } from 'vue'
+import { useRoute, RouterLink } from 'vue-router'
+import { getArticles, getYourFeedArticles } from '../api/articles'
 import { getTags } from '../api/tag'
 import { articleState } from '../models/article'
-import Article from '../components/Article'
+import Article from '../components/HomeArticle'
+import HomeTabs from '../components/HomeTabs'
+import HomePagination from '../components/HomePagination'
 
+// Main Title
 const Banner = () => (
   <div class="banner" style={{ background: '#2e5881' }}>
     <div class="container">
@@ -13,7 +16,9 @@ const Banner = () => (
     </div>
   </div>
 )
-
+/**
+ * Right side tags
+ */
 const TagSidebar = () => (
   <div class="col-md-3">
     <div class="sidebar">
@@ -33,39 +38,60 @@ const TagSidebar = () => (
   </div>
 )
 
-const Tabs = () => (
-  <div class="feed-toggle">
-    <ul class="nav nav-pills outline-active">
-      <li class="nav-item">
-        <RouterLink
-          class="nav-link disabled"
-          to={{ path: '/', query: { tab: 'your_feed' } }}
-        >
-          Your Feed
-        </RouterLink>
-      </li>
-      <li class="nav-item">
-        <RouterLink
-          class="nav-link active"
-          to={{ path: '/', query: { tab: 'global_feed' } }}
-        >
-          Global Feed
-        </RouterLink>
-      </li>
-    </ul>
-  </div>
-)
+// Main component
 export default defineComponent({
   setup() {
-    onMounted(async () => {
-      // 并行执行接口调用
-      const loadArticles = getArticles
+    const route = useRoute()
+    const limit = 20 // page size
+
+    // choose side tag
+    const tag = computed(() => {
+      return route.query.tag || ''
+    })
+    // tab页
+    const tab = computed(() => {
+      return route.query.tab || 'global_feed'
+    })
+    const page = computed(() => {
+      return route.query.page || 1
+    })
+
+    const loadData = async () => {
+      const params = {
+        limit: limit,
+        offset: ((page.value as number) - 1) * limit,
+        tag: tag.value.toString(),
+      }
+      const loadArticles =
+        tab.value === 'your_feed'
+          ? getYourFeedArticles(params)
+          : getArticles(params)
+
       const [articles, tagsResult] = await Promise.all([
-        loadArticles({}),
+        loadArticles,
         getTags(),
       ])
+      // article list
       articleState.articles = articles.data.articles
+      // tag list
       articleState.articleTags = tagsResult.data.tags
+      // article count
+      articleState.articlesCount = articles.data.articlesCount
+      // 添加自定义属性,防止一直点击
+      articleState.articles.forEach(
+        (article) => (article.favoriteDisable = false)
+      )
+    }
+
+    // detective for query
+    watchEffect(() => {
+      console.info('watch effect')
+      loadData()
+    })
+
+    onMounted(async () => {
+      // 并行执行接口调用
+      loadData()
     })
 
     return () => (
@@ -74,7 +100,7 @@ export default defineComponent({
         <div class="container page">
           <div class="row">
             <div class="col-md-9">
-              <Tabs />
+              <HomeTabs tab={tab.value.toString()} tag={tag.value.toString()} />
               {/* Article list */}
               {articleState.articles.map((item) => {
                 return <Article article={item} />
@@ -83,6 +109,12 @@ export default defineComponent({
             <TagSidebar />
           </div>
         </div>
+
+        <HomePagination
+          page={page.value as number}
+          tab={tab.value.toString()}
+          tag={tag.value.toString()}
+        />
       </div>
     )
   },
