@@ -1,10 +1,10 @@
-import { defineComponent, onMounted } from 'vue'
+import { computed, defineComponent, onMounted } from 'vue'
 import { RouterLink } from 'vue-router'
 import { getArticles } from '../api/articles'
 import { getTags } from '../api/tag'
 import { useStore } from 'vuex'
 import { articleState } from '../models/article'
-import Article from '../components/Article'
+import Article from '../components/Article_back'
 
 const Banner = () => (
   <div class="banner" style={{ background: '#2e5881' }}>
@@ -79,7 +79,15 @@ export default defineComponent({
               <Tabs />
               {/* Article list */}
               {articleState.artciles.map((article) => (
-                <Article article={article} />
+                <Article
+                  image={article.author?.image}
+                  createdAt={article.createdAt}
+                  username={article.author?.username}
+                  title={article.title}
+                  body={article.body}
+                  favoritesCount={article.favoritesCount}
+                  slug={article.slug}
+                />
               ))}
             </div>
             <TagSidebar />

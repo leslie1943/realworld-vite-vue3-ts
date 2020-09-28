@@ -12,7 +12,7 @@ export const router = createRouter({
       path: '/',
       name: 'root',
       // layout component
-      component: () => import('../layout/index'),
+      component: () => import('../layout/Index'),
       redirect: { name: 'home' },
       children: [
         {

@@ -1,7 +1,7 @@
 import { defineComponent } from 'vue'
 import { RouterView } from 'vue-router'
-import Header from './header'
-import Footer from './footer'
+import Header from './Header'
+import Footer from './Footer'
 
 export default defineComponent(() => {
   return () => (
