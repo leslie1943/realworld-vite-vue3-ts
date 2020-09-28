@@ -31,7 +31,7 @@ const Article = defineComponent({
         <div class="article-meta">
           <RouterLink
             to={{
-              path: '/profile/' + props.article.author.username,
+              path: `/profile/${props.article.author.username}`,
             }}
           >
             <img src={props.article.author.image} />
@@ -39,7 +39,7 @@ const Article = defineComponent({
           <div class="info">
             <RouterLink
               to={{
-                path: '/profile/' + props.article.author.username,
+                path: `/profile/${props.article.author.username}`,
               }}
             >
               {props.article.author.username}

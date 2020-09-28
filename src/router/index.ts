@@ -30,6 +30,11 @@ export const router = createRouter({
           name: 'register',
           component: () => import('../views/Login'),
         },
+        {
+          path: '/profile/:username',
+          name: 'profile',
+          component: () => import('../views/Profile'),
+        },
       ],
     },
   ],
