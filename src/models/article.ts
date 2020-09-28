@@ -10,27 +10,27 @@ export interface AuthorState {
 
 // Articles state
 export interface SingleArticleState {
-  slug?: string
+  slug: string
   title: string
-  description?: string
+  description: string
   body: string
-  tagList?: Array<string>
-  createdAt?: string
-  updatedAt?: string
+  tagList: Array<string>
+  createdAt: string
+  updatedAt: string
   favorited: boolean
   favoritesCount: number
   author: AuthorState
 }
 // 🚖🚖 All State
 export interface ArticleState {
-  // artciles: Array<SingleArticleState> // also works ✅
+  // articles: Array<SingleArticleState> // also works ✅
   // articleTags: Array<string> // also works ✅
-  artciles: SingleArticleState[]
+  articles: SingleArticleState[]
   articleTags: string[]
 }
 
 // the properties what home page needs.
 export const articleState = reactive<ArticleState>({
-  artciles: [],
+  articles: [],
   articleTags: [],
 })

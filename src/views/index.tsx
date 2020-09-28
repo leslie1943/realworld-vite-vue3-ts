@@ -2,7 +2,6 @@ import { defineComponent, onMounted } from 'vue'
 import { RouterLink } from 'vue-router'
 import { getArticles } from '../api/articles'
 import { getTags } from '../api/tag'
-import { useStore } from 'vuex'
 import { articleState } from '../models/article'
 import Article from '../components/Article'
 
@@ -58,7 +57,6 @@ const Tabs = () => (
 )
 export default defineComponent({
   setup() {
-    const store = useStore()
     onMounted(async () => {
       // 并行执行接口调用
       const loadArticles = getArticles
@@ -66,7 +64,7 @@ export default defineComponent({
         loadArticles({}),
         getTags(),
       ])
-      articleState.artciles = articles.data.articles
+      articleState.articles = articles.data.articles
       articleState.articleTags = tagsResult.data.tags
     })
 
@@ -78,9 +76,9 @@ export default defineComponent({
             <div class="col-md-9">
               <Tabs />
               {/* Article list */}
-              {articleState.artciles.map((article) => (
-                <Article article={article} />
-              ))}
+              {articleState.articles.map((item) => {
+                return <Article article={item} />
+              })}
             </div>
             <TagSidebar />
           </div>

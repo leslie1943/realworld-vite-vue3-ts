@@ -1,12 +1,15 @@
-import { defineComponent } from 'vue'
+import { defineComponent, PropType } from 'vue'
 import { RouterLink } from 'vue-router'
 import { SingleArticleState } from '../models/article'
 
-interface ArticleProps {
-  article: SingleArticleState
-}
 const Article = defineComponent({
-  setup(props: ArticleProps) {
+  props: {
+    article: {
+      type: Object as PropType<SingleArticleState>,
+      required: true,
+    },
+  },
+  setup(props) {
     return () => (
       <div class="article-preview">
         <div class="article-meta">
@@ -25,9 +28,7 @@ const Article = defineComponent({
             >
               {props.article.author.username}
             </RouterLink>
-            <span class="date">
-              {props.article.createdAt?.substring(0, 10)}
-            </span>
+            <span class="date">{props.article.createdAt.substring(0, 10)}</span>
           </div>
           <button class="btn btn-outline-primary btn-sm pull-xs-right">
             <i class="ion-heart"></i> {props.article.favoritesCount}
