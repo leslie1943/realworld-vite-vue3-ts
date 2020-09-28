@@ -1,6 +1,6 @@
 import { computed, defineComponent, onMounted, ref, watchEffect } from 'vue'
 import { useRoute, RouterLink } from 'vue-router'
-import { getArticles, getYourFeedArticles } from '../api/articles'
+import { getArticles, getYourFeedArticles } from '../api/article'
 import { getTags } from '../api/tag'
 import { articleState } from '../models/article'
 import Article from '../components/HomeArticle'

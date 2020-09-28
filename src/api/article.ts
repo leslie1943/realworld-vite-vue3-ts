@@ -25,3 +25,18 @@ export const getYourFeedArticles = (params: IArtcileParam) => {
     params,
   })
 }
+// add favorite
+export const addFavorite = (slug: string) => {
+  return request({
+    method: 'POST',
+    url: `/api/articles/${slug}/favorite`,
+  })
+}
+
+// delete favorite
+export const deleteFavorite = (slug: string) => {
+  return request({
+    method: 'DELETE',
+    url: `/api/articles/${slug}/favorite`,
+  })
+}
