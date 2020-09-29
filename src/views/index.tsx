@@ -1,7 +1,7 @@
 import { computed, defineComponent, onMounted, watchEffect } from 'vue'
 import { useRoute, RouterLink } from 'vue-router'
 import { articleState, loadData } from '../models/article'
-import Article from '../components/Article'
+import ArticleItem from '../components/ArticleItem'
 import HomeTabs from '../components/HomeTabs'
 import HomePagination from '../components/HomePagination'
 
@@ -82,7 +82,7 @@ export default defineComponent({
               <HomeTabs tab={tab.value.toString()} tag={tag.value.toString()} />
               {/* Article list */}
               {articleState.articles.map((item) => {
-                return <Article article={item} />
+                return <ArticleItem article={item} />
               })}
             </div>
             <TagSidebar />

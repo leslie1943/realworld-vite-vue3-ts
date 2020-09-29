@@ -13,7 +13,7 @@ export default defineComponent({
       <nav class="navbar navbar-light">
         <div class="container">
           <RouterLink class="navbar-brand" to={{ path: '/' }}>
-            <span style={{ color: '#2e5881' }}>conduit</span>
+            <span style={{ color: '#2e5881' }}>Home</span>
           </RouterLink>
 
           <ul class="nav navbar-nav pull-xs-right">

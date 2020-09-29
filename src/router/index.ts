@@ -35,6 +35,11 @@ export const router = createRouter({
           name: 'profile',
           component: () => import('../views/Profile'),
         },
+        {
+          path: '/article/:slug',
+          name: 'article',
+          component: () => import('../views/ArticleDetail'),
+        },
       ],
     },
   ],

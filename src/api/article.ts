@@ -1,6 +1,6 @@
 import { request } from '../utils/request'
 
-interface IArtcileParam {
+interface IArtcilesParam {
   tag?: string
   author?: string
   favorited?: string
@@ -9,7 +9,7 @@ interface IArtcileParam {
 }
 
 // get public articles
-export const getArticles = (params: IArtcileParam) => {
+export const getArticles = (params: IArtcilesParam) => {
   return request({
     method: 'GET',
     url: '/api/articles',
@@ -18,7 +18,7 @@ export const getArticles = (params: IArtcileParam) => {
 }
 
 // get feed articles
-export const getYourFeedArticles = (params: IArtcileParam) => {
+export const getYourFeedArticles = (params: IArtcilesParam) => {
   return request({
     method: 'GET',
     url: '/api/articles/feed',
@@ -38,5 +38,13 @@ export const deleteFavorite = (slug: string) => {
   return request({
     method: 'DELETE',
     url: `/api/articles/${slug}/favorite`,
+  })
+}
+
+// get article details
+export const getArticle = (slug: string) => {
+  return request({
+    method: 'GET',
+    url: `/api/articles/${slug}`,
   })
 }

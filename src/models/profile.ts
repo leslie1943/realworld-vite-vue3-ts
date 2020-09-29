@@ -17,13 +17,7 @@ export interface ProfileState {
 }
 
 export const profileState = reactive<ProfileState>({
-  profile: {
-    username: '',
-    bio: '',
-    image: '',
-    following: false,
-    followDisable: false,
-  },
+  profile: new Object() as UserProfile,
   articles: [],
 })
 

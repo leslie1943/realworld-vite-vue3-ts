@@ -3,15 +3,15 @@ import { RouterView } from 'vue-router'
 import { localToStore } from './utils/persist'
 import { useStore } from 'vuex'
 
-// 此文件仅为挂载路由出口
+// this file is router exit
 // export default defineComponent(() => {
 //   return () => <RouterView />
 // })
 
-// 此文件仅为挂载路由出口
+// this file is router exit
 export default defineComponent({
   setup() {
-    // 本地化
+    // record login user infomation in case close browser tempratory
     const store = useStore()
     localToStore(store)
     return () => <RouterView />

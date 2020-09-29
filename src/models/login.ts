@@ -24,11 +24,7 @@ export interface LoginState {
 
 export const loginState = reactive<LoginState>({
   errors: {},
-  user: {
-    username: '',
-    email: '',
-    password: '',
-  },
+  user: new Object() as UserState,
 })
 
 // 提交事件

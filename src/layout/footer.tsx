@@ -6,7 +6,7 @@ export default defineComponent(() => {
     <footer>
       <div class="container" style={{ textAlign: 'center' }}>
         <RouterLink to={{ path: '/' }} class="logo-font">
-          conduit
+          Home
         </RouterLink>
         <span class="attribution">
           An interactive learning project from{' '}

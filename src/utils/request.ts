@@ -31,14 +31,14 @@ request.interceptors.request.use(
 )
 
 /**
- * 🚀🚀 响应拦截器:
+ * 🚀🚀 response :
  */
 request.interceptors.response.use(
   (response: AxiosResponse) => {
     return response
   },
   (error) => {
-    // 401 的情况直接前往登录页面
+    //  redirect to login page if error code is 401
     if (error.response.status == 401) {
       __PUSH__('/login')
     }

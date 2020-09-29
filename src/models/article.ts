@@ -1,10 +1,12 @@
-import { reactive, computed } from 'vue'
+import { reactive, computed, PropType } from 'vue'
 import { getTags } from '../api/tag'
+
 import {
   addFavorite,
   deleteFavorite,
   getYourFeedArticles,
   getArticles,
+  getArticle,
 } from '../api/article'
 
 // Article author state
@@ -34,6 +36,8 @@ export interface ArticleState {
   articles: SingleArticleState[] // articles: Array<SingleArticleState> // also works ✅
   articleTags: string[] // articleTags: Array<string> // also works ✅
   articlesCount: number
+  articleDetail: SingleArticleState
+  isLoaded: boolean
 }
 
 // the properties what home page needs.
@@ -41,6 +45,8 @@ export const articleState = reactive<ArticleState>({
   articles: [],
   articleTags: [],
   articlesCount: 0,
+  articleDetail: new Object() as SingleArticleState,
+  isLoaded: false,
 })
 
 export const totalPage = computed(() => {
@@ -89,4 +95,11 @@ export const loadData = async (params: SearchParam, tab: string) => {
   articleState.articlesCount = articles.data.articlesCount
   // 添加自定义属性,防止一直点击
   articleState.articles.forEach((article) => (article.favoriteDisable = false))
+}
+
+export const loadArticleDetail = async (slug: string) => {
+  articleState.isLoaded = false
+  const { data } = await getArticle(slug)
+  articleState.articleDetail = data.article
+  articleState.isLoaded = true
 }

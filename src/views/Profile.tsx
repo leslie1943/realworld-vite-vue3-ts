@@ -9,7 +9,7 @@ import { useRoute } from 'vue-router'
 import { loadProfile, loadArticles, profileState } from '../models/profile'
 import ProfileBanner from '../components/ProfileBanner'
 import ProfileTabs from '../components/ProfileTabs'
-import Article from '../components/Article'
+import ArticleItem from '../components/ArticleItem'
 
 // Main component
 export default defineComponent({
@@ -49,7 +49,7 @@ export default defineComponent({
               <ProfileTabs tab={tab.value} username={username.value} />
               {/* Article list */}
               {profileState.articles.map((article) => (
-                <Article article={article} />
+                <ArticleItem article={article} />
               ))}
             </div>
           </div>
