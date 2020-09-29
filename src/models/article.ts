@@ -1,5 +1,11 @@
 import { reactive, computed } from 'vue'
-import { addFavorite, deleteFavorite } from '../api/article'
+import { getTags } from '../api/tag'
+import {
+  addFavorite,
+  deleteFavorite,
+  getYourFeedArticles,
+  getArticles,
+} from '../api/article'
 
 // Article author state
 export interface AuthorState {
@@ -46,6 +52,7 @@ export const totalPage = computed(() => {
   return temp
 })
 
+// 点赞/取消
 export const onFavorite = async (article: SingleArticleState) => {
   article.favoriteDisable = true
   if (article.favorited) {
@@ -60,4 +67,26 @@ export const onFavorite = async (article: SingleArticleState) => {
     article.favoritesCount += 1
   }
   article.favoriteDisable = false
+}
+
+interface SearchParam {
+  limit: number
+  offset: number
+  tag: string
+}
+
+// 加载列表
+export const loadData = async (params: SearchParam, tab: string) => {
+  const loadArticles =
+    tab === 'your_feed' ? getYourFeedArticles(params) : getArticles(params)
+
+  const [articles, tagsResult] = await Promise.all([loadArticles, getTags()])
+  // article list
+  articleState.articles = articles.data.articles
+  // tag list
+  articleState.articleTags = tagsResult.data.tags
+  // article count
+  articleState.articlesCount = articles.data.articlesCount
+  // 添加自定义属性,防止一直点击
+  articleState.articles.forEach((article) => (article.favoriteDisable = false))
 }

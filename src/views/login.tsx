@@ -1,18 +1,17 @@
 import { defineComponent, computed } from 'vue'
 import { useRoute, RouterLink, useRouter } from 'vue-router'
 import { loginState } from '../models/login'
-import { login, register } from '../api/user'
-import { setStore } from '../utils/localStore'
+// import { login, register } from '../api/user'
+import { onSubmit } from '../models/login'
+// import { setStore } from '../utils/localStore'
 import { useStore } from 'vuex'
 
 export default defineComponent({
   setup() {
-    // 获取全局vuex对象
-    const store = useStore()
-
     // 获取全局路由对象
     const route = useRoute()
     const router = useRouter()
+    const store = useStore()
     // 是否是登录
     const isLogin = computed(() => {
       return route.path === '/login'
@@ -23,22 +22,22 @@ export default defineComponent({
     })
 
     // 提交事件
-    const onSubmit = async (e: Event) => {
-      e.preventDefault()
-      try {
-        const { data } = isLogin.value
-          ? await login({ user: loginState.user })
-          : await register({ user: loginState.user })
-        // 将登录用户信息设置到本地
-        setStore('user', data.user)
-        // 将登录用户信息设置到Vuex中
-        store.commit('user/setUser', data.user)
-        // 登录成功跳转到首页
-        router.push('/')
-      } catch (err) {
-        loginState.errors = err.response.data.errors
-      }
-    }
+    // const onSubmit = async (e: Event) => {
+    //   e.preventDefault()
+    //   try {
+    //     const { data } = isLogin.value
+    //       ? await login({ user: loginState.user })
+    //       : await register({ user: loginState.user })
+    //     // 将登录用户信息设置到本地
+    //     setStore('user', data.user)
+    //     // 将登录用户信息设置到Vuex中
+    //     store.commit('user/setUser', data.user)
+    //     // 登录成功跳转到首页
+    //     router.push('/')
+    //   } catch (err) {
+    //     loginState.errors = err.response.data.errors
+    //   }
+    // }
 
     return () => (
       <>
@@ -68,7 +67,9 @@ export default defineComponent({
                   ))}
                 </ul>
 
-                <form onSubmit={onSubmit}>
+                <form
+                  onClick={(e) => onSubmit(e, isLogin.value, router, store)}
+                >
                   {/* 登录无需名称 */}
                   {!isLogin.value && (
                     <fieldset class="form-group">
@@ -110,7 +111,7 @@ export default defineComponent({
                   </fieldset>
                   {/* Submit button */}
                   <button
-                    onClick={onSubmit}
+                    onClick={(e) => onSubmit(e, isLogin.value, router, store)}
                     class="btn btn-lg btn-primary pull-xs-right"
                   >
                     {title.value}

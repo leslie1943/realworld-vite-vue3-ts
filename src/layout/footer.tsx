@@ -4,7 +4,7 @@ import { RouterView } from 'vue-router'
 export default defineComponent(() => {
   return () => (
     <footer>
-      <div class="container">
+      <div class="container" style={{ textAlign: 'center' }}>
         <a href="/" class="logo-font">
           conduit
         </a>

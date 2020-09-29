@@ -1,8 +1,6 @@
-import { computed, defineComponent, onMounted, ref, watchEffect } from 'vue'
+import { computed, defineComponent, onMounted, watchEffect } from 'vue'
 import { useRoute, RouterLink } from 'vue-router'
-import { getArticles, getYourFeedArticles } from '../api/article'
-import { getTags } from '../api/tag'
-import { articleState } from '../models/article'
+import { articleState, loadData } from '../models/article'
 import Article from '../components/HomeArticle'
 import HomeTabs from '../components/HomeTabs'
 import HomePagination from '../components/HomePagination'
@@ -45,53 +43,34 @@ export default defineComponent({
     const limit = 20 // page size
 
     // choose side tag
-    const tag = computed(() => {
-      return route.query.tag || ''
+    const tag = computed<string>(() => {
+      return route.query.tag?.toString() || ''
     })
     // tab页
-    const tab = computed(() => {
-      return route.query.tab || 'global_feed'
+    const tab = computed<string>(() => {
+      return route.query.tab?.toString() || 'global_feed'
     })
+
     const page = computed(() => {
       return route.query.page || 1
     })
 
-    const loadData = async () => {
-      const params = {
+    const params = computed(() => {
+      return {
         limit: limit,
         offset: ((page.value as number) - 1) * limit,
-        tag: tag.value.toString(),
+        tag: tag.value,
       }
-      const loadArticles =
-        tab.value === 'your_feed'
-          ? getYourFeedArticles(params)
-          : getArticles(params)
-
-      const [articles, tagsResult] = await Promise.all([
-        loadArticles,
-        getTags(),
-      ])
-      // article list
-      articleState.articles = articles.data.articles
-      // tag list
-      articleState.articleTags = tagsResult.data.tags
-      // article count
-      articleState.articlesCount = articles.data.articlesCount
-      // 添加自定义属性,防止一直点击
-      articleState.articles.forEach(
-        (article) => (article.favoriteDisable = false)
-      )
-    }
-
-    // detective for query
-    watchEffect(() => {
-      console.info('watch effect')
-      loadData()
     })
 
+    // detect for query
+    watchEffect(() => {
+      loadData(params.value, tab.value)
+    })
+
+    // init query
     onMounted(async () => {
-      // 并行执行接口调用
-      loadData()
+      loadData(params.value, tab.value as string)
     })
 
     return () => (
