@@ -1,7 +1,8 @@
 import { defineComponent, PropType } from 'vue'
 import { RouterLink } from 'vue-router'
 import { SingleArticleState } from '../models/article'
-import { addFavorite, deleteFavorite } from '../api/article'
+// import { addFavorite, deleteFavorite } from '../api/article'
+import { onFavorite } from '../models/article'
 
 const Article = defineComponent({
   props: {
@@ -11,21 +12,6 @@ const Article = defineComponent({
     },
   },
   setup(props) {
-    const onFavorite = async (article: SingleArticleState) => {
-      article.favoriteDisable = true
-      if (article.favorited) {
-        // 取消点赞
-        await deleteFavorite(article.slug)
-        article.favorited = false
-        article.favoritesCount += -1
-      } else {
-        // 添加点赞
-        await addFavorite(article.slug)
-        article.favorited = true
-        article.favoritesCount += 1
-      }
-      article.favoriteDisable = false
-    }
     return () => (
       <div class="article-preview">
         <div class="article-meta">

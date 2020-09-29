@@ -1,4 +1,5 @@
 import { reactive, computed } from 'vue'
+import { addFavorite, deleteFavorite } from '../api/article'
 
 // Article author state
 export interface AuthorState {
@@ -44,3 +45,19 @@ export const totalPage = computed(() => {
   }
   return temp
 })
+
+export const onFavorite = async (article: SingleArticleState) => {
+  article.favoriteDisable = true
+  if (article.favorited) {
+    // 取消点赞
+    await deleteFavorite(article.slug)
+    article.favorited = false
+    article.favoritesCount += -1
+  } else {
+    // 添加点赞
+    await addFavorite(article.slug)
+    article.favorited = true
+    article.favoritesCount += 1
+  }
+  article.favoriteDisable = false
+}
