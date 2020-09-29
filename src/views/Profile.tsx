@@ -1,44 +1,56 @@
-import { computed, defineComponent, onMounted, ref, watchEffect } from 'vue'
-import { useRoute, RouterLink } from 'vue-router'
-import { profileState } from '../models/profile'
-import { getProfile } from '../api/profile'
+import {
+  computed,
+  defineComponent,
+  onMounted,
+  onUpdated,
+  watchEffect,
+} from 'vue'
+import { useRoute } from 'vue-router'
+import { loadProfile, loadArticles, profileState } from '../models/profile'
+import ProfileBanner from '../components/ProfileBanner'
+import ProfileTabs from '../components/ProfileTabs'
+import Article from '../components/Article'
 
 // Main component
 export default defineComponent({
   setup() {
     const route = useRoute()
-    onMounted(async () => {
-      const username = route.params.username as string
-      const { data } = await getProfile(username)
-      profileState.profile = data.profile
+    // route query => tab
+    const tab = computed<string>(() => {
+      return route.query.tab?.toString() || 'favorited'
     })
+    // route params => username
+    const username = computed<string>(() => {
+      return route.params.username as string
+    })
+    onMounted(() => {
+      // get profile
+      loadProfile(username.value)
+      // get articles
+      loadArticles(tab.value, username.value)
+    })
+    // 检测params的变化
+    onUpdated(() => {
+      loadProfile(username.value)
+    })
+
+    // detect for query
+    watchEffect(() => {
+      loadArticles(tab.value, username.value)
+    })
+
     return () => (
       <div class="profile-page">
-        <div class="user-info">
-          <div class="container">
-            <div class="row">
-              <div class="col-xs-12 col-md-10 offset-md-1">
-                <div>
-                  <img
-                    style={{ maxHeight: '200px' }}
-                    src={profileState.profile.image}
-                  />
-                </div>
-                <h4>{profileState.profile.username}</h4>
-                <p>{profileState.profile.bio || 'No bio yet :('}</p>
-                <button
-                  class={
-                    profileState.profile.following
-                      ? 'active btn btn-sm btn-outline-secondary action-btn'
-                      : 'btn btn-sm btn-outline-secondary action-btn'
-                  }
-                >
-                  <i class="ion-plus-round"></i>
-                  &nbsp;
-                  {profileState.profile.following ? 'Unfollow' : 'Follow'}{' '}
-                  {profileState.profile.username}
-                </button>
-              </div>
+        <ProfileBanner />
+        <div class="container">
+          <div class="row">
+            <div class="col-xs-12 col-md-10 offset-md-1">
+              {/* Tabs */}
+              <ProfileTabs tab={tab.value} username={username.value} />
+              {/* Article list */}
+              {profileState.articles.map((article) => (
+                <Article article={article} />
+              ))}
             </div>
           </div>
         </div>

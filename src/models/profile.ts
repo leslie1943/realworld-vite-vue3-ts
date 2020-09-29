@@ -1,14 +1,19 @@
-import { reactive, computed } from 'vue'
+import { reactive } from 'vue'
+import { followingUser, unfollowingUser, getProfile } from '../api/profile'
+import { getArticles } from '../api/article'
+import { SingleArticleState } from '../models/article'
 
 export interface UserProfile {
   username: string
   bio: string
   image: string
   following: boolean
+  followDisable: boolean
 }
 
 export interface ProfileState {
   profile: UserProfile
+  articles: SingleArticleState[]
 }
 
 export const profileState = reactive<ProfileState>({
@@ -17,5 +22,38 @@ export const profileState = reactive<ProfileState>({
     bio: '',
     image: '',
     following: false,
+    followDisable: false,
   },
+  articles: [],
 })
+
+// Like / Dislike: user
+export const onFollow = async (profile: UserProfile) => {
+  // 关注用户
+  profile.followDisable = true
+  if (profile.following) {
+    // 取注
+    await unfollowingUser(profile.username)
+    profile.following = false
+  } else {
+    // 关注
+    await followingUser(profile.username)
+    profile.following = true
+  }
+  profile.followDisable = false
+}
+// get profile from url
+export const loadProfile = async (username: string) => {
+  const { data } = await getProfile(username)
+  profileState.profile = data.profile
+  profileState.profile.followDisable = false
+}
+
+// get articles
+export const loadArticles = async (tab: string, username: string) => {
+  let params =
+    tab === 'favorited' ? { favorited: username } : { author: username }
+  const res = await getArticles(params)
+  profileState.articles = res.data.articles
+  profileState.articles.forEach((article) => (article.favoriteDisable = false))
+}

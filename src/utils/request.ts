@@ -1,6 +1,7 @@
 import axios from 'axios'
-import { AxiosRequestConfig } from 'axios'
+import { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { store } from '../store/index'
+import { __PUSH__ } from '../router/index'
 
 export const request = axios.create({
   baseURL: 'https://conduit.productionready.io',
@@ -26,5 +27,20 @@ request.interceptors.request.use(
   (error) => {
     // 如果请求失败(此时请求还没有发出来)就会进入这里
     return Promise.reject(error)
+  }
+)
+
+/**
+ * 🚀🚀 响应拦截器:
+ */
+request.interceptors.response.use(
+  (response: AxiosResponse) => {
+    return response
+  },
+  (error) => {
+    // 401 的情况直接前往登录页面
+    if (error.response.status == 401) {
+      __PUSH__('/login')
+    }
   }
 )

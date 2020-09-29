@@ -1,7 +1,7 @@
 import { computed, defineComponent, onMounted, watchEffect } from 'vue'
 import { useRoute, RouterLink } from 'vue-router'
 import { articleState, loadData } from '../models/article'
-import Article from '../components/HomeArticle'
+import Article from '../components/Article'
 import HomeTabs from '../components/HomeTabs'
 import HomePagination from '../components/HomePagination'
 
@@ -69,7 +69,7 @@ export default defineComponent({
     })
 
     // init query
-    onMounted(async () => {
+    onMounted(() => {
       loadData(params.value, tab.value as string)
     })
 

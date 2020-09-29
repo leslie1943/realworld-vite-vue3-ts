@@ -41,3 +41,4 @@ export const router = createRouter({
 })
 
 export const __HREF__ = (to: RouteLocationRaw) => router.resolve(to).href
+export const __PUSH__ = (path: string) => router.push(path)

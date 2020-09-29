@@ -3167,31 +3167,31 @@ fieldset[disabled] a.btn {
 }
 
 .btn-outline-secondary {
-    color: #ccc;
+    color: #fff;
     background-image: none;
-    background-color: transparent;
-    border-color: #ccc
+    background-color: #2E5885;
+    border-color: #2E5885
 }
 
 .btn-outline-secondary:hover {
     color: #fff;
-    background-color: #ccc;
-    border-color: #ccc
+    background-color: #2E5885;
+    border-color: #2E5885
 }
 
 .btn-outline-secondary:focus,
 .btn-outline-secondary.focus {
     color: #fff;
-    background-color: #ccc;
-    border-color: #ccc
+    background-color: #2E5885;
+    border-color: #2E5885
 }
 
 .btn-outline-secondary:active,
 .btn-outline-secondary.active,
 .open>.btn-outline-secondary.dropdown-toggle {
     color: #fff;
-    background-color: #ccc;
-    border-color: #ccc
+    background-color: #2E5885;
+    border-color: #2E5885
 }
 
 .btn-outline-secondary:active:hover,
@@ -3204,20 +3204,20 @@ fieldset[disabled] a.btn {
 .open>.btn-outline-secondary.dropdown-toggle:focus,
 .open>.btn-outline-secondary.dropdown-toggle.focus {
     color: #fff;
-    background-color: #a1a1a1;
-    border-color: #8c8c8c
+    background-color: #2E5885;
+    border-color: #2E5885
 }
 
 .btn-outline-secondary.disabled:focus,
 .btn-outline-secondary.disabled.focus,
 .btn-outline-secondary:disabled:focus,
 .btn-outline-secondary:disabled.focus {
-    border-color: #fff
+    border-color: #2E5885
 }
 
 .btn-outline-secondary.disabled:hover,
 .btn-outline-secondary:disabled:hover {
-    border-color: #fff
+    border-color: #2E5885
 }
 
 .btn-outline-info {
@@ -7320,8 +7320,9 @@ ul.tag-list li {
 
 .nav-pills.outline-active .nav-link.active {
     background: #fff !important;
-    border-bottom: 2px solid #5cb85c !important;
-    color: #5cb85c !important
+    border-bottom: 2px solid #2E5885 !important;
+    color: #2E5885 !important;
+    font-weight: 600;
 }
 
 footer {
@@ -7334,7 +7335,8 @@ footer {
 }
 
 footer .logo-font {
-    vertical-align: middle
+    vertical-align: middle;
+    color: #2E5885;
 }
 
 footer .attribution {
@@ -7635,8 +7637,8 @@ footer .attribution {
 
 .profile-page .user-info .action-btn {
     float: right;
-    color: #999;
-    border: 1px solid #999
+    color: #fff;
+    border: 1px solid #2E5885
 }
 
 .profile-page .articles-toggle {

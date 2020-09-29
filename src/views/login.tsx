@@ -21,24 +21,6 @@ export default defineComponent({
       return isLogin.value ? 'Sign in' : 'Sign up'
     })
 
-    // 提交事件
-    // const onSubmit = async (e: Event) => {
-    //   e.preventDefault()
-    //   try {
-    //     const { data } = isLogin.value
-    //       ? await login({ user: loginState.user })
-    //       : await register({ user: loginState.user })
-    //     // 将登录用户信息设置到本地
-    //     setStore('user', data.user)
-    //     // 将登录用户信息设置到Vuex中
-    //     store.commit('user/setUser', data.user)
-    //     // 登录成功跳转到首页
-    //     router.push('/')
-    //   } catch (err) {
-    //     loginState.errors = err.response.data.errors
-    //   }
-    // }
-
     return () => (
       <>
         <div class="auth-page">

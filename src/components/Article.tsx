@@ -1,7 +1,6 @@
 import { defineComponent, PropType } from 'vue'
 import { RouterLink } from 'vue-router'
 import { SingleArticleState } from '../models/article'
-// import { addFavorite, deleteFavorite } from '../api/article'
 import { onFavorite } from '../models/article'
 
 const Article = defineComponent({
