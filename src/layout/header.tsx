@@ -25,7 +25,7 @@ export default defineComponent({
             {/* New Post */}
             {user.value && (
               <li class="nav-item">
-                <RouterLink class="nav-link" to={{ path: '/' }}>
+                <RouterLink class="nav-link" to={{ path: '/editor' }}>
                   <i class="ion-compose"></i>&nbsp;New Post
                 </RouterLink>
               </li>

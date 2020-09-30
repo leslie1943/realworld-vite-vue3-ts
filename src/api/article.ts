@@ -1,6 +1,6 @@
 import { request } from '../utils/request'
 import { CommentBody } from '../models/article'
-
+import { EditorApiState } from '../models/editor'
 interface IArtcilesParam {
   tag?: string
   author?: string
@@ -80,5 +80,23 @@ export const deleteComment = (slug: string, id: number) => {
   return request({
     method: 'DELETE',
     url: `/api/articles/${slug}/comments/${id}`,
+  })
+}
+
+// update / create article
+export const createArticle = (data: EditorApiState) => {
+  return request({
+    method: 'POST',
+    url: '/api/articles',
+    data,
+  })
+}
+
+// modify article
+export const updateArticle = (slug: string, data: EditorApiState) => {
+  return request({
+    method: 'PUT',
+    url: `/api/articles/${slug}`,
+    data,
   })
 }

@@ -40,6 +40,16 @@ export const router = createRouter({
           name: 'article',
           component: () => import('../views/Article'),
         },
+        {
+          path: '/editor',
+          name: 'editor-new',
+          component: () => import('../views/Editor'),
+        },
+        {
+          path: '/editor/:slug',
+          name: 'editor-edit',
+          component: () => import('../views/Editor'),
+        },
       ],
     },
   ],
