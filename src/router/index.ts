@@ -50,6 +50,11 @@ export const router = createRouter({
           name: 'editor-edit',
           component: () => import('../views/Editor'),
         },
+        {
+          path: '/settings', // 设置
+          name: 'settings',
+          component: () => import('../views/Setting'),
+        },
       ],
     },
   ],

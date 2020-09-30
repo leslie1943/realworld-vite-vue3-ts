@@ -159,7 +159,7 @@ export const btnStyle = computed(() => {
   return {
     backgroundColor: articleState.isSelfArticle ? '#B85C5C' : '#2E5885',
     borderColor: articleState.isSelfArticle ? '#B85C5C' : '#2E5885',
-    color: articleState.isSelfArticle ? '#FFF' : 'springgreen',
+    color: articleState.isSelfArticle ? '#FFF' : '#fff',
     marginLeft: '10px',
   }
 })
