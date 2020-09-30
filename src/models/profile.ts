@@ -1,28 +1,20 @@
 import { reactive } from 'vue'
-import { followingUser, unfollowingUser, getProfile } from '../api/profile'
 import { getArticles } from '../api/article'
-import { SingleArticleState } from '../models/article'
-
-export interface UserProfile {
-  username: string
-  bio: string
-  image: string
-  following: boolean
-  followDisable: boolean
-}
+import { followingUser, unfollowingUser, getProfile } from '../api/profile'
+import { AuthorState, SingleArticleState } from './article'
 
 export interface ProfileState {
-  profile: UserProfile
+  profile: AuthorState
   articles: SingleArticleState[]
 }
 
 export const profileState = reactive<ProfileState>({
-  profile: new Object() as UserProfile,
+  profile: new Object() as AuthorState,
   articles: [],
 })
 
 // Like / Dislike: user
-export const onFollow = async (profile: UserProfile) => {
+export const onFollow = async (profile: AuthorState) => {
   // 关注用户
   profile.followDisable = true
   if (profile.following) {

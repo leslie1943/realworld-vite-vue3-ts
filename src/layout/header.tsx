@@ -57,7 +57,10 @@ export default defineComponent({
             {/* 账户信息 */}
             {user.value && (
               <li class="nav-item">
-                <RouterLink class="nav-link" to={{ path: '/' }}>
+                <RouterLink
+                  class="nav-link"
+                  to={{ path: `/profile/${user.value.username}` }}
+                >
                   <img class="user-pic" src={user.value.image} />
                   {user.value.username}
                 </RouterLink>

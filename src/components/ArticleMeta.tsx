@@ -1,7 +1,14 @@
-import { computed, defineComponent, onMounted, PropType } from 'vue'
-import { SingleArticleState } from '../models/article'
+import { defineComponent, PropType } from 'vue'
 import { RouterLink } from 'vue-router'
-import { store } from '../store/index'
+import { onFollow } from '../models/profile'
+import {
+  articleState,
+  SingleArticleState,
+  removeArticle,
+  onFavorite,
+  btnStyle,
+  btnClass,
+} from '../models/article'
 
 const ArticleMeta = defineComponent({
   props: {
@@ -11,10 +18,6 @@ const ArticleMeta = defineComponent({
     },
   },
   setup(props) {
-    const { user } = store.modules?.user.state
-    const isSelf = computed(() => {
-      return user.username === props.article.author.username
-    })
     return () => (
       <div class="article-meta">
         <RouterLink to={{ path: `/profile/${props.article.author.username}` }}>
@@ -31,31 +34,33 @@ const ArticleMeta = defineComponent({
         </div>
 
         {/* self article */}
-        {isSelf.value && (
+        {articleState.isSelfArticle && (
           <>
             <RouterLink
+              style={btnStyle.value}
               class="btn btn-outline-secondary btn-sm"
-              to={{ path: `/editor${props.article.slug}` }}
+              to={{ path: `/editor/${props.article.slug}` }}
             >
               <i class="ion-edit"></i> Edit Article
             </RouterLink>
 
-            <button class="btn btn-outline-danger btn-sm">
+            <button
+              onClick={() => removeArticle(props.article.slug)}
+              style={btnStyle.value}
+              class="btn btn-outline-secondary btn-sm"
+            >
               <i class="ion-trash-a"></i> Delete Article
             </button>
           </>
         )}
 
-        {/* else article */}
-        {!isSelf.value && (
+        {/* some else article */}
+        {!articleState.isSelfArticle && (
           <>
             <button
-              class="btn btn-sm btn-outline-primary"
-              style={{
-                backgroundColor: '#2E5885',
-                borderColor: '#2E5885',
-                color: 'springgreen',
-              }}
+              onClick={() => onFollow(props.article.author)}
+              class={btnClass}
+              style={btnStyle.value}
             >
               <i class="ion-plus-round"></i>
               {props.article.author.following
@@ -63,13 +68,9 @@ const ArticleMeta = defineComponent({
                 : `following ${props.article.author.username}`}
             </button>
             <button
-              style={{
-                backgroundColor: '#2E5885',
-                borderColor: '#2E5885',
-                color: 'springgreen',
-                marginLeft: '10px',
-              }}
-              class="btn btn-sm btn-outline-primary"
+              style={btnStyle.value}
+              class={btnClass}
+              onClick={() => onFavorite(props.article)}
             >
               <i class="ion-heart"></i>
               {props.article.favorited ? 'unfavorite Post' : 'Favorite Post'}

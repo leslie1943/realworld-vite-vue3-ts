@@ -1,5 +1,8 @@
-import { reactive, computed, PropType } from 'vue'
+import { reactive, computed } from 'vue'
 import { getTags } from '../api/tag'
+import { __PUSH__ } from '../router/index'
+import { store } from '../store/index'
+const { user } = store.modules?.user.state
 
 import {
   addFavorite,
@@ -7,6 +10,10 @@ import {
   getYourFeedArticles,
   getArticles,
   getArticle,
+  deleteComment,
+  addComment,
+  deleteArticle,
+  getComments,
 } from '../api/article'
 
 // Article author state
@@ -15,6 +22,7 @@ export interface AuthorState {
   bio?: any
   image?: string
   following?: boolean
+  followDisable?: boolean
 }
 
 // Articles state
@@ -31,6 +39,19 @@ export interface SingleArticleState {
   author: AuthorState
   favoriteDisable?: boolean
 }
+
+export interface SingleCommentState {
+  body: string
+  createdAt: string
+  id: number
+  updatedAt: string
+  author: AuthorState
+}
+
+export interface CommentBody {
+  body: string
+}
+
 // 🚖🚖 All State
 export interface ArticleState {
   articles: SingleArticleState[] // articles: Array<SingleArticleState> // also works ✅
@@ -38,16 +59,17 @@ export interface ArticleState {
   articlesCount: number
   articleDetail: SingleArticleState
   isLoaded: boolean
+  isSelfArticle: boolean
+  commentParam: CommentBody
+  commentList: SingleCommentState[]
+  currentUserName: string
 }
 
-// the properties what home page needs.
-export const articleState = reactive<ArticleState>({
-  articles: [],
-  articleTags: [],
-  articlesCount: 0,
-  articleDetail: new Object() as SingleArticleState,
-  isLoaded: false,
-})
+interface SearchParam {
+  limit: number
+  offset: number
+  tag: string
+}
 
 export const totalPage = computed(() => {
   let temp = []
@@ -57,6 +79,40 @@ export const totalPage = computed(() => {
   }
   return temp
 })
+
+// load article list
+export const loadData = async (params: SearchParam, tab: string) => {
+  const loadArticles =
+    tab === 'your_feed' ? getYourFeedArticles(params) : getArticles(params)
+  const [articles, tagsResult] = await Promise.all([loadArticles, getTags()])
+  // article list
+  articleState.articles = articles.data.articles
+  // tag list
+  articleState.articleTags = tagsResult.data.tags
+  // article count
+  articleState.articlesCount = articles.data.articlesCount
+  // 添加自定义属性,防止一直点击
+  articleState.articles.forEach((article) => (article.favoriteDisable = false))
+}
+
+// load article information
+export const loadArticleDetail = async (slug: string) => {
+  // setTimeout(async () => {
+  articleState.isLoaded = false
+  const { data } = await getArticle(slug)
+  articleState.articleDetail = data.article
+
+  // is login user self or not
+  articleState.isSelfArticle =
+    user.username === articleState.articleDetail.author.username
+  articleState.isLoaded = true
+  // }, 10000)
+}
+
+export const loadComments = async (slug: string) => {
+  const { data } = await getComments(slug)
+  articleState.commentList = data.comments
+}
 
 // 点赞/取消
 export const onFavorite = async (article: SingleArticleState) => {
@@ -75,31 +131,55 @@ export const onFavorite = async (article: SingleArticleState) => {
   article.favoriteDisable = false
 }
 
-interface SearchParam {
-  limit: number
-  offset: number
-  tag: string
+export const removeArticle = async (slug: string) => {
+  await deleteArticle(slug)
+  __PUSH__('/profile/' + articleState.articleDetail.author.username)
 }
 
-// 加载列表
-export const loadData = async (params: SearchParam, tab: string) => {
-  const loadArticles =
-    tab === 'your_feed' ? getYourFeedArticles(params) : getArticles(params)
-
-  const [articles, tagsResult] = await Promise.all([loadArticles, getTags()])
-  // article list
-  articleState.articles = articles.data.articles
-  // tag list
-  articleState.articleTags = tagsResult.data.tags
-  // article count
-  articleState.articlesCount = articles.data.articlesCount
-  // 添加自定义属性,防止一直点击
-  articleState.articles.forEach((article) => (article.favoriteDisable = false))
+// delete article
+export const removeComment = async (slug: string, id: number) => {
+  await deleteComment(slug, id)
+  articleState.commentList = articleState.commentList.filter(
+    (item) => item.id != id
+  )
 }
 
-export const loadArticleDetail = async (slug: string) => {
-  articleState.isLoaded = false
-  const { data } = await getArticle(slug)
-  articleState.articleDetail = data.article
-  articleState.isLoaded = true
+// add comment
+export const insertComment = async (e: Event) => {
+  e.preventDefault()
+  if (articleState.commentParam.body) {
+    await addComment(articleState.articleDetail.slug, articleState.commentParam)
+    articleState.commentParam.body = ''
+    loadComments(articleState.articleDetail.slug)
+  }
 }
+
+// custom style for button
+export const btnStyle = computed(() => {
+  return {
+    backgroundColor: articleState.isSelfArticle ? '#B85C5C' : '#2E5885',
+    borderColor: articleState.isSelfArticle ? '#B85C5C' : '#2E5885',
+    color: articleState.isSelfArticle ? '#FFF' : 'springgreen',
+    marginLeft: '10px',
+  }
+})
+
+// custom class for button
+export const btnClass = computed(() => {
+  return articleState.articleDetail.author.following
+    ? 'active btn btn-sm btn-outline-primary'
+    : 'btn btn-sm btn-outline-primary'
+})
+
+// the properties what home page needs.
+export const articleState = reactive<ArticleState>({
+  articles: [],
+  articleTags: [],
+  articlesCount: 0,
+  articleDetail: new Object() as SingleArticleState,
+  isLoaded: false,
+  isSelfArticle: true,
+  commentParam: new Object() as CommentBody,
+  commentList: [],
+  currentUserName: user.username,
+})

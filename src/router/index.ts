@@ -38,7 +38,7 @@ export const router = createRouter({
         {
           path: '/article/:slug',
           name: 'article',
-          component: () => import('../views/ArticleDetail'),
+          component: () => import('../views/Article'),
         },
       ],
     },
