@@ -14,7 +14,7 @@ const Tabs = defineComponent({
               class={props.tab === 'author' ? 'active nav-link' : 'nav-link'}
               to={{ query: { tab: 'author' } }}
             >
-              Articles of {props.username}
+              Created by {props.username}
             </RouterLink>
           </li>
           <li class="nav-item">

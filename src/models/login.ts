@@ -5,7 +5,7 @@ import { Router } from 'vue-router'
 import { Store } from 'vuex'
 
 // 表单元素约束
-export interface UserState {
+export interface RegisterUserState {
   email: string
   password: string
   username?: string
@@ -18,13 +18,13 @@ export interface ErrorState {
 
 // 🚖🚖 All State
 export interface LoginState {
-  user: UserState
+  user: RegisterUserState
   errors: ErrorState
 }
 
 export const loginState = reactive<LoginState>({
   errors: {},
-  user: new Object() as UserState,
+  user: new Object() as RegisterUserState,
 })
 
 // 提交事件
