@@ -9,8 +9,8 @@ import HomePagination from '../components/HomePagination'
 const Banner = () => (
   <div class="banner" style={{ background: '#2e5881' }}>
     <div class="container">
-      <h1 class="logo-font"># Test Demo</h1>
-      <p>A place to share your knowledge.</p>
+      <h1 class="logo-font"># Beyond</h1>
+      <p>No Regrets To This Life</p>
     </div>
   </div>
 )
